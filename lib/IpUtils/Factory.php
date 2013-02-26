@@ -23,8 +23,8 @@ class Factory {
 	}
 
 	public static function getExpression($expr) {
-		if (strpos($address, '/') === false) {
-			if (strpos($address, '*') === false) {
+		if (strpos($expr, '/') === false) {
+			if (strpos($expr, '*') === false) {
 				return new Expression\Literal($expr);
 			}
 

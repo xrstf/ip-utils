@@ -27,7 +27,7 @@ class Pattern implements ExpressionInterface {
 	 */
 	public function matches(AddressInterface $address) {
 		$addrChunks = $address->getChunks();
-		$exprChunks = explode('.:', $this->expression);
+		$exprChunks = preg_split('/[.:]/', $this->expression);
 
 		if (count($exprChunks) !== count($addrChunks)) {
 			throw new \UnexpectedValueException('Address and expression do not contain the same amount of chunks. Did you mix IPv4 and IPv6?');
