@@ -65,7 +65,7 @@ class Subnet implements ExpressionInterface {
 			$netmask = -1 << (32 - $this->netmask) & ip2long('255.255.255.255');
 			$lower  &= $netmask;
 
-			return ($addr & $this->netmask) == $lower;
+			return ($addr & $netmask) == $lower;
 		}
 		elseif ($address instanceof IPv6 && $this->lower instanceof IPv6) {
 			$lower = unpack('n*', inet_pton($lower));
