@@ -51,14 +51,12 @@ class IPv4 implements AddressInterface {
 	}
 
 	/**
-	 * get IP-specific chunks ([127,000,000,001])
+	 * get IP-specific chunks ([127,0,0,1])
 	 *
 	 * @return array
 	 */
 	public function getChunks() {
-		return array_map(function($byte) {
-			return sprintf('%03d', $byte);
-		}, explode('.', $this->getExpanded()));
+		return explode('.', $this->getExpanded());
 	}
 
 	/**

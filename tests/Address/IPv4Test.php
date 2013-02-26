@@ -81,9 +81,8 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 
 	public function chunkProvider() {
 		return array(
-			array('0.0.0.0',   array('000', '000', '000', '000')),
-			array('127.0.0.1', array('127', '000', '000', '001')),
-			array('12.0.0.1',  array('012', '000', '000', '001')),
+			array('0.0.0.0',   array('0', '0', '0', '0')),
+			array('127.0.0.1', array('127', '0', '0', '1'))
 		);
 	}
 
@@ -101,7 +100,7 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 			array('192.168.100.15', true),
 			array('10.0.0.0',       true),
 			array('10.0.0.50',      true),
-			array('10.0.1.50',      false),
+			array('10.0.1.50',      true),
 			array('127.0.0.1',      false),
 			array('172.16.0.1',     true),
 			array('172.1.0.1',      false),

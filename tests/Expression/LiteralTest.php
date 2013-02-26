@@ -26,14 +26,13 @@ class LiteralTest extends \PHPUnit_Framework_TestCase {
 
 	public function addressProvider() {
 		return array(
-			array('0.0.0.0',    new IPv4('0.0.0.0'),    true),
-			array('12.0.0.0',   new IPv4('12.0.0.0'),   true),
-			array('12.0.0.255', new IPv4('12.0.0.255'), true),
-			array('12.0.0.255', new IPv4('12.0.0.'),    false),
-			array('12.0.0.255', new IPv4('12..0.255'),  false),
-			array('12.0.0.0',   new IPv4('1.0.0.0'),    false),
-			array('12.0.0.0',   new IPv4('1.2.0.0'),    false),
-			array('12.0.55.0',  new IPv4('12.0.55.0'),  false)
+			array('0.0.0.0',         new IPv4('0.0.0.0'),         true),
+			array('12.0.0.0',        new IPv4('12.0.0.0'),        true),
+			array('12.0.0.255',      new IPv4('12.0.0.255'),      true),
+			array('255.254.255.255', new IPv4('254.255.255.255'), false),
+			array('12.0.0.0',        new IPv4('1.0.0.0'),         false),
+			array('12.0.0.0',        new IPv4('1.2.0.0'),         false),
+			array('12.0.',           new IPv4('1.2.0.0'),         false)
 		);
 	}
 }

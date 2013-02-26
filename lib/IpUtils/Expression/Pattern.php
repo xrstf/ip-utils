@@ -16,7 +16,10 @@ class Pattern implements ExpressionInterface {
 	protected $expression;
 
 	public function __construct($expression) {
-		$this->expression = trim($expression);
+		$expression = strtolower(trim($expression));
+		$expression = preg_replace('/\*+/', '*', $expression);
+
+		$this->expression = $expression;
 	}
 
 	/**
@@ -37,14 +40,17 @@ class Pattern implements ExpressionInterface {
 			$addrChunk = $addrChunks[$idx];
 
 			if (strpos($exprChunk, '*') === false) {
-				if ($addrChunk !== $exprChunk) {
+				// It's okay if the expression contains '.0.' and the IP contains '.000.',
+				// we just care for the numerical value (and it's also okay to interprete
+				// IPv4 chunks as hex values, as long as we interprete both as hex).
+				if (hexdec($addrChunk) !== hexdec($exprChunk)) {
 					return false;
 				}
 			}
 			else {
-				$exprChunk = str_replace('*', '?*', $exprChunk);
+				$exprChunk = str_replace('*', '[0-9a-f]+?', $exprChunk);
 
-				if (!fnmatch($exprChunk, $addrChunk)) {
+				if (!preg_match('/^'.$exprChunk.'$/', $addrChunk)) {
 					return false;
 				}
 			}

@@ -53,7 +53,7 @@ class IPv6 implements AddressInterface {
 	}
 
 	/**
-	 * get IP-specific chunks ([00ff,0000,0000,0000,0012,2001,00ff,....])
+	 * get IP-specific chunks ([ff,0,0,0,12,2001,ff,....])
 	 *
 	 * @return array
 	 */
