@@ -16,7 +16,7 @@ class Literal implements ExpressionInterface {
 	protected $expression;
 
 	public function __construct($expression) {
-		$this->expression = trim($expression);
+		$this->expression = strtolower(trim($expression));
 	}
 
 	/**

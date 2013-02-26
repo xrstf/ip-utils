@@ -87,8 +87,8 @@ class IPv4 implements AddressInterface {
 	public function isPrivate() {
 		return
 			$this->matches(new Subnet('10.0.0.0/8')) ||
-			$this->matches(new Subnet('172.16.0.0/16')) ||
-			$this->matches(new Subnet('192.168.0.0/14'))
+			$this->matches(new Subnet('172.16.0.0/12')) ||
+			$this->matches(new Subnet('192.168.0.0/16'))
 		;
 	}
 
