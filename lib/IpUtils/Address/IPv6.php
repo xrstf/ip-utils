@@ -31,7 +31,7 @@ class IPv6 implements AddressInterface {
 	 * @return boolean
 	 */
 	public static function isValid($address) {
-		return filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+		return filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
 	}
 
 	/**

@@ -29,7 +29,7 @@ class IPv4 implements AddressInterface {
 	 * @return boolean
 	 */
 	public static function isValid($address) {
-		return filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+		return filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
 	}
 
 	/**
