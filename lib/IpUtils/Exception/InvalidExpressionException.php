@@ -8,7 +8,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace IpUtils;
+namespace IpUtils\Exception;
 
 class InvalidExpressionException extends \Exception {
 }

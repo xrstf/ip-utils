@@ -47,7 +47,7 @@ class SubnetTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider       invalidProvider
-	 * @expectedException  IpUtils\InvalidExpressionException
+	 * @expectedException  IpUtils\Exception\InvalidExpressionException
 	 */
 	public function testInvalidFormats($subnet) {
 		$subnet = new Subnet($subnet);

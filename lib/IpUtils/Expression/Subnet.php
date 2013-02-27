@@ -13,7 +13,7 @@ namespace IpUtils\Expression;
 use IpUtils\Address\AddressInterface;
 use IpUtils\Address\IPv4;
 use IpUtils\Address\IPv6;
-use IpUtils\InvalidExpressionException;
+use IpUtils\Exception\InvalidExpressionException;
 
 class Subnet implements ExpressionInterface {
 	protected $lower;
