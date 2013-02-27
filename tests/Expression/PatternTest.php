@@ -12,6 +12,7 @@ namespace Expression;
 
 use IpUtils\Expression\Pattern;
 use IpUtils\Address\IPv4;
+use IpUtils\Address\IPv6;
 
 class PatternTest extends \PHPUnit_Framework_TestCase {
 	/**
@@ -54,7 +55,18 @@ class PatternTest extends \PHPUnit_Framework_TestCase {
 			array('0.0.0.1*1',   new IPv4('0.0.0.101'),   true),
 			array('0.0.0.1*1',   new IPv4('0.0.0.11'),    false),
 			array('0.0.0.1*1',   new IPv4('0.0.0.110'),   false),
-			array('0.0.0.1*1',   new IPv4('0.0.0.1'),     false)
+			array('0.0.0.1*1',   new IPv4('0.0.0.1'),     false),
+
+			array('2001:db8:85a3:0:0:8a2e:370:7334', new IPv6('2001:db8:85a3::8a2e:370:7334'), true),
+			array('2001:db8:85a3:0:0:*:370:7334',    new IPv6('2001:db8:85a3::8a2e:370:7334'), true),
+			array('2001:db8:8*a3:0:0:8a*e:370:7334', new IPv6('2001:db8:85a3::8a2e:370:7334'), true),
+			array('2001:**:8*a3:0:0:8a*e:370:7334',  new IPv6('2001:db8:85a3::8a2e:370:7334'), true),
+			array('2001:**:8*a3:0:0:8a*e:370:*3*4',  new IPv6('2001:db8:85a3::8a2e:370:7334'), true),
+
+			array('2001:db8:85a3:0:0:9*:370:7334',    new IPv6('2001:db8:85a3::8a2e:370:7334'), false),
+			array('2001:db8:85a3:0:0:8a2e:370*:7334', new IPv6('2001:db8:85a3::8a2e:370:7334'), false),
+			array('2001:db8:*85a3:0:0:8a2e:370:7334', new IPv6('2001:db8:85a3::8a2e:370:7334'), false),
+			array('2001:d*b8:85a3:0:0:8a2e:370:7334', new IPv6('2001:db8:85a3::8a2e:370:7334'), false),
 		);
 	}
 }
