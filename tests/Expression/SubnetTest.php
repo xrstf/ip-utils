@@ -37,7 +37,11 @@ class SubnetTest extends \PHPUnit_Framework_TestCase {
 			array('2.0.0.0/7',  new IPv4('3.0.0.0'),       true),
 			array('1.0.0.0/32', new IPv4('1.0.0.0'),       true),
 			array('1.0.0.0/32', new IPv4('1.0.0.1'),       false),
-			array('1.0.0.0/32', new IPv4('2.0.0.0'),       false)
+			array('1.0.0.0/32', new IPv4('2.0.0.0'),       false),
+
+			array('2a01:198:603:0::/65', new IPv6('2a01:198:603:0:396e:4789:8e99:890f'), true),
+			array('2a01:198:603:0::/65', new IPv6('2a00:198:603:0:396e:4789:8e99:890f'), false),
+			array('2001::/16',           new IPv6('2000::1'),                            false)
 		);
 	}
 
