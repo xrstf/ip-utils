@@ -33,6 +33,21 @@ class IPv4 implements AddressInterface {
 	}
 
 	/**
+	 * @param  int $netmask
+	 * @return boolean
+	 */
+	public static function isValidNetmask($netmask) {
+		return $netmask >= 1 && $netmask <= 32;
+	}
+
+	/**
+	 * @return IPv4
+	 */
+	public static function getLoopback() {
+		return new self('127.0.0.1');
+	}
+
+	/**
 	 * get fully expanded address
 	 *
 	 * @return string

@@ -26,27 +26,32 @@ class Subnet implements ExpressionInterface {
 
 		list($lower, $netmask) = explode('/', $expression, 2);
 
-		if (strpos($netmask, '.') !== false) {
+		if (strpos($netmask, '.') !== false || strpos($netmask, ':') !== false) {
 			throw new InvalidExpressionException('Netmasks may not use the IP address format ("127.0.0.1/255.0.0.0").');
 		}
 
-		$netmask = (int) $netmask;
-
-		if ($netmask < 1 || $netmask > 32) {
-			throw new InvalidExpressionException('Netmask must be in range [1..32].');
-		}
-
-		$this->netmask = $netmask;
+		// check IP format first
 
 		if (IPv4::isValid($lower)) {
-			$this->lower = new IPv4($lower);
+			$ip = new IPv4($lower);
 		}
 		elseif (IPv6::isValid($lower)) {
-			$this->lower = new IPv6($lower);
+			$ip = new IPv6($lower);
 		}
 		else {
 			throw new InvalidExpressionException('Subnet expression "'.$expression.'" contains an invalid IP.');
 		}
+
+		// now we can properly handle the netmask range
+
+		$netmask = (int) $netmask;
+
+		if (!$ip::isValidNetmask($netmask)) {
+			throw new InvalidExpressionException('Invalid or out of range netmask given.');
+		}
+
+		$this->lower   = $ip;
+		$this->netmask = $netmask;
 	}
 
 	/**

@@ -35,6 +35,21 @@ class IPv6 implements AddressInterface {
 	}
 
 	/**
+	 * @param  int $netmask
+	 * @return boolean
+	 */
+	public static function isValidNetmask($netmask) {
+		return $netmask >= 1 && $netmask <= 128;
+	}
+
+	/**
+	 * @return IPv6
+	 */
+	public static function getLoopback() {
+		return new self('::1');
+	}
+
+	/**
 	 * get fully expanded address
 	 *
 	 * @return string
