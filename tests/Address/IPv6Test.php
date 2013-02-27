@@ -10,18 +10,18 @@
 
 namespace Address;
 
-use IpUtils\Address\IPv4;
+use IpUtils\Address\IPv6;
 use IpUtils\Factory;
 
-class IPv4Test extends \PHPUnit_Framework_TestCase {
+class IPv6Test extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider  addressProvider
 	 */
 	public function testIsValid($address, $expected) {
-		$this->assertEquals($expected, IPv4::isValid($address));
+		$this->assertEquals($expected, IPv6::isValid($address));
 
 		try {
-			$addr = new IPv4($address);
+			$addr = new IPv6($address);
 
 			if ($expected === false) {
 				$this->fail('Constructor should fail if invalid IP was given.');
@@ -36,48 +36,50 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 
 	public function addressProvider() {
 		return array(
-			array('0.0.0.0',   true),
-			array('127.0.0.1', true),
+			array('::1',       true),
+			array('feee::0:1', true),
 
-			array('127.0.0.300', false),
-			array('127.0.000.1', false),
-			array('127.0. 0.1',  false),
-			array('127. ',       false),
-			array('',            false),
-			array('::1',         false),
-			array('1.1.1.1/8',   false),
-			array('1.-.1.1',     false)
+			array('muh',     false),
+			array('muh::1',  false),
+			array('',        false),
+			array('1',       false),
+			array('1:',      false),
+			array('1:foo',   false),
+			array('1.1.1.1', false),
+			array('::1/123', false),
+			array(': :1',    false)
 		);
 	}
 
 	public function testGetExpanded() {
-		$addr = new IPv4('127.0.0.1');
-		$this->assertSame('127.0.0.1', $addr->getExpanded());
+		$addr = new IPv6('::1');
+		$this->assertSame('0000:0000:0000:0000:0000:0000:0000:0001', $addr->getExpanded());
 	}
 
 	public function testGetCompact() {
-		$addr = new IPv4('127.0.0.1');
-		$this->assertSame('127.0.0.1', $addr->getCompact());
+		$addr = new IPv6('0:0:0:0:0:0:0:1');
+		$this->assertSame('::1', $addr->getCompact());
 	}
 
 	public function testToString() {
-		$addr = new IPv4('127.0.0.1');
-		$this->assertSame('127.0.0.1', (string) $addr);
+		$addr = new IPv6('0:0:0:0:0:0:0:1');
+		$this->assertSame('::1', (string) $addr);
 	}
 
 	/**
 	 * @dataProvider  loopbackProvider
 	 */
 	public function testIsLoopback($address, $expected) {
-		$address = new IPv4($address);
+		$address = new IPv6($address);
 		$this->assertSame($expected, $address->isLoopback());
 	}
 
 	public function loopbackProvider() {
 		return array(
-			array('127.0.0.1', true),
-			array('127.0.0.2', false),
-			array('127.0.1.0', false)
+			array('0:0:0:0:0:0:0:1',  true),
+			array('::1',              true),
+			array('1::1',             false),
+			array('2a01:198:603:0::', false)
 		);
 	}
 
@@ -85,14 +87,14 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider  chunkProvider
 	 */
 	public function testGetChunks($address, array $chunks) {
-		$addr = new IPv4($address);
+		$addr = new IPv6($address);
 		$this->assertSame($chunks, $addr->getChunks());
 	}
 
 	public function chunkProvider() {
 		return array(
-			array('0.0.0.0',   array('0', '0', '0', '0')),
-			array('127.0.0.1', array('127', '0', '0', '1'))
+			array('::1',              array('0', '0', '0', '0', '0', '0', '0', '1')),
+			array('2a01:198:603:0::', array('2a01', '198', '603', '0', '0', '0', '0', '0'))
 		);
 	}
 
@@ -100,24 +102,26 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider  privateProvider
 	 */
 	public function testIsPrivate($address, $expected) {
-		$addr = new IPv4($address);
+		$addr = new IPv6($address);
 		$this->assertSame($expected, $addr->isPrivate());
 	}
 
 	public function privateProvider() {
 		return array(
-			array('0.0.0.0',        false),
-			array('192.168.100.15', true),
-			array('10.0.0.0',       true),
-			array('10.0.0.50',      true),
-			array('10.0.1.50',      true),
-			array('127.0.0.1',      false),
-			array('172.16.0.1',     true),
-			array('172.1.0.1',      false)
+			array('::1',               false),
+			array('fc00::',            true),
+			array('fc00::1',           true),
+			array('fd00::1',           true),
+			array('fc00:0:0:0:1::',    true),
+			array('fc00:0:beaf:0:1::', true),
+
+			array('fbff::',     false),
+			array('fbff::ffff', false),
+			array('fe01::beaf', false)
 		);
 	}
 
 	public function testGetLoopback() {
-		$this->assertTrue(IPv4::getLoopback()->isLoopback());
+		$this->assertTrue(IPv6::getLoopback()->isLoopback());
 	}
 }

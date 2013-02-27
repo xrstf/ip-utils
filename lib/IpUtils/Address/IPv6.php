@@ -73,7 +73,9 @@ class IPv6 implements AddressInterface {
 	 * @return array
 	 */
 	public function getChunks() {
-		return explode(':', $this->getExpanded());
+		return array_map(function($c) {
+			return ltrim($c, '0') ?: '0';
+		}, explode(':', $this->getExpanded()));
 	}
 
 	/**
