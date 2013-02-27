@@ -13,6 +13,7 @@ namespace IpUtils\Expression;
 use IpUtils\Address\AddressInterface;
 use IpUtils\Address\IPv4;
 use IpUtils\Address\IPv6;
+use IpUtils\InvalidExpressionException;
 
 class Subnet implements ExpressionInterface {
 	protected $lower;
@@ -20,19 +21,19 @@ class Subnet implements ExpressionInterface {
 
 	public function __construct($expression) {
 		if (strpos($expression, '/') === false) {
-			throw new \UnexpectedValueException('Invalid subnet expression "'.$expression.'" given.');
+			throw new InvalidExpressionException('Invalid subnet expression "'.$expression.'" given.');
 		}
 
 		list($lower, $netmask) = explode('/', $expression, 2);
 
 		if (strpos($netmask, '.') !== false) {
-			throw new \UnexpectedValueException('Netmasks may not use the IP address format ("127.0.0.1/255.0.0.0").');
+			throw new InvalidExpressionException('Netmasks may not use the IP address format ("127.0.0.1/255.0.0.0").');
 		}
 
 		$netmask = (int) $netmask;
 
-		if ($netmask < 0 || $netmask > 32) {
-			throw new \UnexpectedValueException('Netmask must be in range [0..32].');
+		if ($netmask < 1 || $netmask > 32) {
+			throw new InvalidExpressionException('Netmask must be in range [1..32].');
 		}
 
 		$this->netmask = $netmask;
@@ -44,7 +45,7 @@ class Subnet implements ExpressionInterface {
 			$this->lower = new IPv6($lower);
 		}
 		else {
-			throw new \UnexpectedValueException('Subnet expression "'.$expression.'" contains an invalid IP.');
+			throw new InvalidExpressionException('Subnet expression "'.$expression.'" contains an invalid IP.');
 		}
 	}
 
@@ -84,6 +85,6 @@ class Subnet implements ExpressionInterface {
 			return true;
 		}
 
-		throw new \UnexpectedValueException('Can only compare mixed IP versions.');
+		throw new \LogicException('Can only compare IPs of the same version.');
 	}
 }
