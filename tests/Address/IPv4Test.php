@@ -46,7 +46,7 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 			array('',            false),
 			array('::1',         false),
 			array('1.1.1.1/8',   false),
-			array('1.-.1.1',     false),
+			array('1.-.1.1',     false)
 		);
 	}
 
@@ -103,7 +103,11 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 			array('10.0.1.50',      true),
 			array('127.0.0.1',      false),
 			array('172.16.0.1',     true),
-			array('172.1.0.1',      false),
+			array('172.1.0.1',      false)
 		);
+	}
+
+	public function testGetLoopback() {
+		$this->assertTrue(IPv4::getLoopback()->isLoopback());
 	}
 }
