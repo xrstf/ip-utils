@@ -113,6 +113,15 @@ class IPv4 implements AddressInterface {
 	}
 
 	/**
+	 * check whether the IP is a link-local address
+	 *
+	 * @return boolean
+	 */
+	public function isLinkLocal() {
+		return $this->matches(new Subnet('169.254.1.0/24'));
+	}
+
+	/**
 	 * check whether the address matches a given pattern/range
 	 *
 	 * @param  ExpressionInterface $expression

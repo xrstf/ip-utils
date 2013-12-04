@@ -135,4 +135,19 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 			array('220.0.0.2', false)
 		);
 	}
+
+	/**
+	 * @dataProvider  linkLocalProvider
+	 */
+	public function testIsLinkLocal($address, $expected) {
+		$addr = new IPv4($address);
+		$this->assertSame($expected, $addr->isLinkLocal());
+	}
+
+	public function linkLocalProvider() {
+		return array(
+			array('169.254.1.1', true),
+			array('169.255.1.1', false),
+		);
+	}
 }
