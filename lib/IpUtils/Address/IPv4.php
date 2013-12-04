@@ -106,6 +106,13 @@ class IPv4 implements AddressInterface {
 	}
 
 	/**
+	 * check whether the IP is a multicast address
+	 */
+	public function isMulticast() {
+		return $this->matches(new Subnet('224.0.0.0/4'));
+	}
+
+	/**
 	 * check whether the address matches a given pattern/range
 	 *
 	 * @param  ExpressionInterface $expression

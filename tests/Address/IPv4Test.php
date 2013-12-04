@@ -120,4 +120,19 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 	public function testGetLoopback() {
 		$this->assertTrue(IPv4::getLoopback()->isLoopback());
 	}
+
+	/**
+	 * @dataProvider  multicastProvider
+	 */
+	public function testIsMulticast($address, $expected) {
+		$addr = new IPv4($address);
+		$this->assertSame($expected, $addr->isMulticast());
+	}
+
+	public function multicastProvider() {
+		return array(
+			array('224.0.0.1', true),
+			array('220.0.0.2', false)
+		);
+	}
 }
