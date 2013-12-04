@@ -89,7 +89,7 @@ class IPv4 implements AddressInterface {
 	 * @return boolean
 	 */
 	public function isLoopback() {
-		return $this->getExpanded() === '127.0.0.1';
+		return $this->matches(new Subnet('127.0.0.0/8'));
 	}
 
 	/**

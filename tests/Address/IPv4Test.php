@@ -76,8 +76,9 @@ class IPv4Test extends \PHPUnit_Framework_TestCase {
 	public function loopbackProvider() {
 		return array(
 			array('127.0.0.1', true),
-			array('127.0.0.2', false),
-			array('127.0.1.0', false)
+			array('127.0.0.2', true),
+			array('127.0.1.0', true),
+            array('128.0.0.1', false)
 		);
 	}
 
